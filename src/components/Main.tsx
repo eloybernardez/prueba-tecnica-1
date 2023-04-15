@@ -1,20 +1,22 @@
-import { memo } from 'react';
-import { useFetchCat } from '../hooks/useFetchCat';
+import { useFetchFact } from '../hooks/useFetchFact';
+import { useFetchCatImage } from '../hooks/useFetchCatImage';
 import '../styles/Main.css';
 
 function Main() {
-  const [data, loading, error] = useFetchCat();
+  const { fact, factError } = useFetchFact();
+  const { catImage,loading, imageError } = useFetchCatImage(fact);
 
+  
   return (
     <main className='centeredContent'>
       <h1>Cat facts</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error</p>}
-      {data.length > 0 && (
+      {loading && !(factError || imageError) && <p>Loading...</p>}
+      {(factError || imageError) && <p>Error:{factError || imageError}</p>}
+      {!loading && !(factError || imageError) && fact && (
         <div className='centeredContent'>
-          <p>{data.fact}</p>
+          <p>{fact}</p>
           <img
-            src={data.img}
+            src={catImage}
             alt='cat pic using the first word of the fact'
           />
         </div>
@@ -23,4 +25,4 @@ function Main() {
   );
 }
 
-export default memo(Main);
+export default Main;
