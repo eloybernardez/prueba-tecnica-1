@@ -5,7 +5,7 @@ const CAT_IMAGE_API = (firstWord: string) =>
   `https://cataas.com/cat/says/${firstWord}?json=true`;
 const CAT_PREFIX_URL = 'https://cataas.com';
 
-export const useFetchCatImage = (fact: string) => {
+export const useCatImage = (fact: string) => {
   const [catImage, setCatImage] = useState('')
   const [imageError, setImageError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -17,6 +17,7 @@ export const useFetchCatImage = (fact: string) => {
 
     async function getImageData(firstWord: string) {
       try {
+        if (!loading) setLoading(true);
         const catImageResponse = await fetch(CAT_IMAGE_API(firstWord));
         const catImageData: CatImage = await catImageResponse.json();
 
